@@ -248,7 +248,7 @@ class Retrowave(Filter):
             self.modified_img = resulted_img
 
 
-    def apply_vhs_effect(self, inplace=True):
+    def apply_vhs_effects(self, inplace=True):
         if isinstance(inplace, bool) == False:
             raise TypeError("Parameter 'inplace' must be a boolean.")
 
