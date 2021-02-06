@@ -29,8 +29,10 @@ retrofier.apply_vhs_effects() #applies all effects that forms the VHS filter
 retrofier.show() #shows the modiefied image so far
 retrofier.save(path="YOUR_SAVE_PATH") #saves the modified image on the selected path
 ```
+ <br />
 **Before:**
 ![Alt](https://github.com/begalv/Retrofy/blob/main/docs/images/before.jpg)
+ <br />
 **After:**
 ![Alt](https://github.com/begalv/Retrofy/blob/main/docs/images/after.png)
 
