@@ -23,12 +23,16 @@ The simplest way to use the package is as follow:
 ```python
 from retrofy import Retrowave
 
-retrofier = Retrowave("YOUR_PHOTO_PATH")
+retrofier = Retrowave("YOUR_PHOTO_PATH") #you can use URLs for photos on the web
 retrofier.apply_vhs_effects() #applies all effects that forms the VHS filter
 
 retrofier.show() #shows the modiefied image so far
 retrofier.save(path="YOUR_SAVE_PATH") #saves the modified image on the selected path
 ```
+**Before:**
+
+**After:**
 
 Note that all effects used on this example used the default values as arguments. <br /><br /> If you want to adjust the arguments values, you can call the effects methods separately. <br /><br />
-See the examples directory for more information.
+
+
