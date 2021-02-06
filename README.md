@@ -30,8 +30,9 @@ retrofier.show() #shows the modiefied image so far
 retrofier.save(path="YOUR_SAVE_PATH") #saves the modified image on the selected path
 ```
 **Before:**
-
+![Alt](https://github.com/begalv/Retrofy/blob/main/docs/images/before.jpg)
 **After:**
+![Alt](https://github.com/begalv/Retrofy/blob/main/docs/images/after.png)
 
 Note that all effects used on this example used the default values as arguments. <br /><br /> If you want to adjust the arguments values, you can call the effects methods separately. <br /><br />
 
