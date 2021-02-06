@@ -9,7 +9,11 @@ import retrofy.utils as utils
 class Filter():
 
     def __init__(self, img_src):
+        if isinstance(img_src, str) == False:
+            raise TypeError("Parameter 'img_src' must be a string.")
+
         self.__img_src = img_src
+        self.__last_modifications = []
 
 
     @property
@@ -19,13 +23,18 @@ class Filter():
     @modified_img.setter
     def modified_img(self, img):
         if isinstance(img, Image.Image) == False:
-            raise TypeError("Filter attribute 'modified_img' must be an Pillow Image object.")
-        self.__before_last_mod = self.__modified_img
+            raise TypeError("Parameter 'modified_img' must be an Pillow Image object.")
         self.__modified_img = img
+        self.__last_modifications.append(self.__modified_img)
+
 
     @property
     def original_img(self):
         return self.__original_img
+
+    @property
+    def last_modifications(self):
+        return self.__last_modifications
 
 
     def load_image(self):
@@ -44,16 +53,28 @@ class Filter():
                 raise ValueError("Could not access image on file '{}'.".format(self.__img_src))
 
 
-    def undo(self):
-        if hasattr(self, "_Filter__before_last_mod"):
-            self.modified_img = self.__before_last_mod
+    def undo(self, times=1):
+        if isinstance(times, int) == False:
+            raise TypeError("Parameter 'times' must be an integer.")
+
+        if len(self.__last_modifications) > 0:
+            for i in range(times):
+                if len(self.__last_modifications) > 0:
+                    self.__last_modifications.pop(-1)
+            if len(self.__last_modifications) == 0:
+                self.reset()
+            else:
+                self.__modified_img = self.__last_modifications[-1]
 
 
     def reset(self):
-        self.modified_img = self.__original_img
+        self.__modified_img = self.__original_img
 
 
     def show(self, original=False):
+        if isinstance(original, bool) == False:
+            raise TypeError("Parameter 'original' must be a boolean.")
+
         if original == False:
             self.__modified_img.show()
         else:
@@ -61,12 +82,15 @@ class Filter():
 
 
     def save(self, path, original=False):
+        if isinstance(original, bool) == False:
+            raise TypeError("Parameter 'original' must be a boolean.")
         if isinstance(path, str) == False and isinstance(file_path, Path) == False:
-            raise TypeError("Parameter 'path' for 'save_result' method must be a string or a Path object.")
+            raise TypeError("Parameter 'path' must be a string or a Path object.")
+
         path = Path(path)
         if path.suffix == "":
             path = path.parent / Path(path.stem + ".png")
-        if self.__modified_img.mode == "RGBA" and path.suffix != "png":
+        if self.__modified_img.mode == "RGBA" and path.suffix != ".png":
             raise ValueError("RGBA Image must have 'png' file extension.")
         try:
             if original == False:

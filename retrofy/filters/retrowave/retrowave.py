@@ -19,6 +19,9 @@ class Retrowave(Filter):
 
     @staticmethod
     def get_noise_lines_by_id(id):
+        if isinstance(id, int) == False:
+            raise TypeError("Parameter 'id' must be an integer.")
+
         is_id_validated, id_path = utils.is_in_folder(CONFIGS.PATHS["images"]["noise_lines"], str(id), format="png")
         if is_id_validated == True:
             noise_lines_img = Image.open(id_path).convert("L")
@@ -29,6 +32,14 @@ class Retrowave(Filter):
 
     @staticmethod
     def generate_noise_lines(size=VHS_SIZE, intensity=CONFIGS.DEFAULTS["noise_lines"]["intensity"], blur=CONFIGS.DEFAULTS["noise_lines"]["blur"], bright=CONFIGS.DEFAULTS["noise_lines"]["bright"]):
+        if isinstance(size, tuple) == False:
+            raise TypeError("Parameter 'size' must be a tuple.")
+        if isinstance(intensity, float) == False:
+            raise TypeError("Parameter 'intensity' must be a float.")
+        if isinstance(blur, float) == False:
+            raise TypeError("Parameter 'blur' must be a float.")
+        if isinstance(bright, float) == False:
+            raise TypeError("Parameter 'bright' must be a float.")
 
         intensity = utils.clamp(intensity, 0, 1)
         blur = utils.clamp(blur, 0, 1)
@@ -75,6 +86,17 @@ class Retrowave(Filter):
 
 
     def apply_noise_lines(self, intensity=CONFIGS.DEFAULTS["noise_lines"]["intensity"], blur=CONFIGS.DEFAULTS["noise_lines"]["blur"], bright=CONFIGS.DEFAULTS["noise_lines"]["bright"], img_id=None, inplace=True):
+        if isinstance(intensity, float) == False:
+            raise TypeError("Parameter 'intensity' must be a float.")
+        if isinstance(blur, float) == False:
+            raise TypeError("Parameter 'blur' must be a float.")
+        if isinstance(bright, float) == False:
+            raise TypeError("Parameter 'bright' must be a float.")
+        if isinstance(img_id, int) == False and img_id != None:
+            raise TypeError("Parameter 'img_id' must be an integer.")
+        if isinstance(inplace, bool) == False:
+            raise TypeError("Parameter 'inplace' must be a boolean.")
+
         if img_id != None:
             noise_lines_mask = Retrowave.get_noise_lines_by_id(img_id)
             noise_lines_mask = noise_lines_mask.resize(self.modified_img.size)
@@ -112,6 +134,13 @@ class Retrowave(Filter):
 
 
     def apply_color_glitch(self, intensity=0.3, crop=True, inplace=True):
+        if isinstance(intensity, float) == False:
+            raise TypeError("Parameter 'intensity' must be a float.")
+        if isinstance(crop, bool) == False:
+            raise TypeError("Parameter 'crop' must be a boolean.")
+        if isinstance(inplace, bool) == False:
+            raise TypeError("Parameter 'inplace' must be a boolean.")
+
         intensity = utils.clamp(intensity, 0, 1)
         offset = int(utils.pctg_to_value(intensity, CONFIGS.MAXS["color_glitch"]["distortion"]))
 
@@ -136,6 +165,13 @@ class Retrowave(Filter):
 
 
     def apply_film_grain(self, intensity=0.5, blur=0.3, inplace=True):
+        if isinstance(intensity, float) == False:
+            raise TypeError("Parameter 'intensity' must be a float.")
+        if isinstance(blur, float) == False:
+            raise TypeError("Parameter 'blur' must be a float.")
+        if isinstance(inplace, bool) == False:
+            raise TypeError("Parameter 'inplace' must be a boolean.")
+
         intensity = utils.clamp(intensity, 0, 1)
         blur = utils.clamp(blur, 0, 1)
         blur = utils.pctg_to_value(blur, CONFIGS.MAXS["film_grain"]["blur"])
@@ -166,6 +202,13 @@ class Retrowave(Filter):
             self.modified_img = resulted_img
 
     def apply_horizontal_lines(self, intensity=0.5, blur=0.5, inplace=True):
+        if isinstance(intensity, float) == False:
+            raise TypeError("Parameter 'intensity' must be a float.")
+        if isinstance(blur, float) == False:
+            raise TypeError("Parameter 'blur' must be a float.")
+        if isinstance(inplace, bool) == False:
+            raise TypeError("Parameter 'inplace' must be a boolean.")
+
         intensity = utils.clamp(intensity, 0, 1)
         intensity = utils.translate_ranges(intensity, 0, 1, 0.35, 0.75)
         height_divider = utils.pctg_to_value(intensity, CONFIGS.MAXS["horizontal_lines"]["height_divider"])
@@ -203,3 +246,18 @@ class Retrowave(Filter):
             return resulted_img
         else:
             self.modified_img = resulted_img
+
+
+    def apply_vhs_effect(self, inplace=True):
+        if isinstance(inplace, bool) == False:
+            raise TypeError("Parameter 'inplace' must be a boolean.")
+
+        self.apply_noise_lines()
+        self.apply_color_glitch()
+        self.apply_horizontal_lines()
+        self.apply_film_grain()
+
+        if inplace==False:
+            resulted_img = self.modified_img
+            self.undo(4)
+            return resulted_img
