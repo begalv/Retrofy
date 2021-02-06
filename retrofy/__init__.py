@@ -1,1 +1,1 @@
-from filterfy.filters.retrowave import Retrowave
+from retrofy.filters.retrowave import Retrowave

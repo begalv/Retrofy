@@ -3,9 +3,9 @@ import random
 from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops
 import blend_modes
 from pathlib import Path
-from filterfy.filters.filter import Filter
-from filterfy.configs import Retrowave_Configs
-import filterfy.utils as utils
+from retrofy.filters.filter import Filter
+from retrofy.configs import Retrowave_Configs
+import retrofy.utils as utils
 
 CONFIGS = Retrowave_Configs()
 VHS_SIZE = (705, 405)

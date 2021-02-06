@@ -3,7 +3,7 @@ import requests
 import os
 from PIL import Image
 from pathlib import Path
-import filterfy.utils as utils
+import retrofy.utils as utils
 
 
 class Filter():
