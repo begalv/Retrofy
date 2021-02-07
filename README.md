@@ -10,7 +10,7 @@ Download the repository on your machine and execute the follow command on a term
 python -m pip install -e <repository_path>
 ```
 
-Or simply navigate to the folder where the repository is through terminal and execute the follow command:
+Or simply navigate to the folder where the repository is and execute the follow command:
 
 ```bash
 python -m pip install -e ./Retrofy
@@ -26,6 +26,9 @@ from retrofy import Retrowave
 retrofier = Retrowave("YOUR_PHOTO_PATH") #you can use URLs for photos on the web
 retrofier.apply_vhs_effects() #applies all effects that forms the VHS filter
 
+#or you can do it with inplace = False
+resulted_img = retrofier.apply_vhs_effects(inplace=False)
+
 retrofier.show() #shows the modiefied image so far
 retrofier.save(path="YOUR_SAVE_PATH") #saves the modified image on the selected path
 ```
@@ -34,6 +37,6 @@ retrofier.save(path="YOUR_SAVE_PATH") #saves the modified image on the selected 
 **After:**
 ![Alt](https://github.com/begalv/Retrofy/blob/main/docs/images/after.png)
 
-Note that all effects used on this example used the default values as arguments. <br /><br /> If you want to adjust the arguments values, you can call the effects methods separately. <br /><br />
+Note that all effects used on this example used default values as arguments. <br /><br /> If you want to adjust the arguments values, you can call the effects methods separately. <br /><br />
 
 
