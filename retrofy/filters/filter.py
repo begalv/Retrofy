@@ -9,21 +9,29 @@ import retrofy.utils as utils
 class Filter():
 
     def __init__(self, img_src):
-        if isinstance(img_src, str) == False:
-            raise TypeError("Parameter 'img_src' must be a string.")
+        if isinstance(img_src, (str, Image.Image)) == False:
+            raise TypeError("Parameter 'img_src' must be a string or a Pillow Image object.")
+
+        # if img_src alredy is a PIL Image object
+        if isinstance(img_src, Image.Image) == True:
+            is_image = True
+        else:
+            is_image = False
 
         self.__img_src = img_src
-        self.__last_modifications = []
+        self.__last_modifications = [] #list for all modifications that wasnt undoed
+        self.__load_image(is_image)
 
 
     @property
     def modified_img(self):
         return self.__modified_img
 
+
     @modified_img.setter
     def modified_img(self, img):
         if isinstance(img, Image.Image) == False:
-            raise TypeError("Parameter 'modified_img' must be an Pillow Image object.")
+            raise TypeError("Parameter 'modified_img' must be a Pillow Image object.")
         self.__modified_img = img
         self.__last_modifications.append(self.__modified_img)
 
@@ -37,20 +45,24 @@ class Filter():
         return self.__last_modifications
 
 
-    def load_image(self):
-        if utils.is_url(self.__img_src) == True:
-            try:
-                self.__img_src = requests.get(self.__img_src, stream=True).raw
-                self.__original_img = Image.open(self.__img_src).convert("RGB")
-                self.__modified_img = self.__original_img
-            except:
-                raise ValueError("Could not download image from URL '{}'.".format(self.__img_src))
+    def __load_image(self, is_image=False):
+        if is_image == True:
+            self.__original_img = self.__img_src
+            self.__modified_img = self.__original_img
         else:
-            try:
-                self.__original_img = Image.open(self.__img_src).convert("RGB")
-                self.__modified_img = self.__original_img
-            except:
-                raise ValueError("Could not access image on file '{}'.".format(self.__img_src))
+            if utils.is_url(self.__img_src) == True:
+                try:
+                    self.__img_src = requests.get(self.__img_src, stream=True).raw
+                    self.__original_img = Image.open(self.__img_src).convert("RGB")
+                    self.__modified_img = self.__original_img
+                except:
+                    raise ValueError("Could not download image from URL '{}'.".format(self.__img_src))
+            else:
+                try:
+                    self.__original_img = Image.open(self.__img_src).convert("RGB")
+                    self.__modified_img = self.__original_img
+                except:
+                    raise ValueError("Could not access image on file '{}'.".format(self.__img_src))
 
 
     def undo(self, times=1):

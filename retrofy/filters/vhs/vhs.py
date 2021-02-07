@@ -4,17 +4,15 @@ from PIL import Image, ImageFilter, ImageOps, ImageEnhance, ImageChops
 import blend_modes
 from pathlib import Path
 from retrofy.filters.filter import Filter
-from retrofy.configs import Retrowave_Configs
+from retrofy.configs import VHS_Configs
 import retrofy.utils as utils
 
-CONFIGS = Retrowave_Configs()
-VHS_SIZE = (705, 405)
+CONFIGS = VHS_Configs()
 
-class Retrowave(Filter):
+class VHS(Filter):
 
     def __init__(self, img_src):
         super().__init__(img_src)
-        self.load_image()
 
 
     @staticmethod
@@ -31,7 +29,7 @@ class Retrowave(Filter):
 
 
     @staticmethod
-    def generate_noise_lines(size=VHS_SIZE, intensity=CONFIGS.DEFAULTS["noise_lines"]["intensity"], blur=CONFIGS.DEFAULTS["noise_lines"]["blur"], bright=CONFIGS.DEFAULTS["noise_lines"]["bright"]):
+    def generate_noise_lines(size=CONFIGS.SIZE, intensity=CONFIGS.DEFAULTS["noise_lines"]["intensity"], blur=CONFIGS.DEFAULTS["noise_lines"]["blur"], bright=CONFIGS.DEFAULTS["noise_lines"]["bright"]):
         if isinstance(size, tuple) == False:
             raise TypeError("Parameter 'size' must be a tuple.")
         if isinstance(intensity, float) == False:
@@ -98,10 +96,10 @@ class Retrowave(Filter):
             raise TypeError("Parameter 'inplace' must be a boolean.")
 
         if img_id != None:
-            noise_lines_mask = Retrowave.get_noise_lines_by_id(img_id)
+            noise_lines_mask = VHS.get_noise_lines_by_id(img_id)
             noise_lines_mask = noise_lines_mask.resize(self.modified_img.size)
         else:
-            noise_lines_mask = Retrowave.generate_noise_lines(size=self.modified_img.size, intensity=intensity, blur=blur, bright=bright)
+            noise_lines_mask = VHS.generate_noise_lines(size=self.modified_img.size, intensity=intensity, blur=blur, bright=bright)
 
         white_img = Image.new("RGB", self.modified_img.size, (255,255,255))
 
@@ -237,8 +235,6 @@ class Retrowave(Filter):
         lines_img = lines_img.filter(ImageFilter.GaussianBlur(blur))
         lines_arr = np.array(lines_img).astype(float)
 
-        #intensity = utils.translate_ranges(intensity, 0, 1, 0.4, 0.6)
-
         resulted_arr = blend_modes.soft_light(resulted_arr, lines_arr,intensity)
         resulted_img = Image.fromarray(resulted_arr.astype(np.uint8))
 
@@ -248,7 +244,7 @@ class Retrowave(Filter):
             self.modified_img = resulted_img
 
 
-    def apply_vhs_effects(self, inplace=True):
+    def apply_all_effects(self, inplace=True):
         if isinstance(inplace, bool) == False:
             raise TypeError("Parameter 'inplace' must be a boolean.")
 

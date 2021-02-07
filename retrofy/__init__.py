@@ -1,1 +1,1 @@
-from retrofy.filters.retrowave import Retrowave
+from retrofy.filters.vhs import VHS

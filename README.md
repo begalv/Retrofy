@@ -21,13 +21,13 @@ python -m pip install -e ./Retrofy
 The simplest way to use the package is as follow:
 
 ```python
-from retrofy import Retrowave
+from retrofy import VHS
 
-retrofier = Retrowave("YOUR_PHOTO_PATH") #you can use URLs for photos on the web
-retrofier.apply_vhs_effects() #applies all effects that forms the VHS filter
+retrofier = VHS("YOUR_PHOTO_PATH") #you can use URLs for photos on the web or Pillow Image Objects as well
+retrofier.apply_all_effects() #applies all effects that forms the VHS filter
 
 #or you can do it with inplace = False
-resulted_img = retrofier.apply_vhs_effects(inplace=False)
+resulted_img = retrofier.apply_all_effects(inplace=False)
 
 retrofier.show() #shows the modiefied image so far
 retrofier.save(path="YOUR_SAVE_PATH") #saves the modified image on the selected path
@@ -38,5 +38,3 @@ retrofier.save(path="YOUR_SAVE_PATH") #saves the modified image on the selected 
 ![Alt](https://github.com/begalv/Retrofy/blob/main/docs/images/after.png)
 
 Note that all effects used on this example used default values as arguments. <br /><br /> If you want to adjust the arguments values, you can call the effects methods separately. <br /><br />
-
-

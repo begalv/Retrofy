@@ -5,12 +5,14 @@ DOWNLOADS_FOLDER = Path(os.path.expanduser("~")) / Path("Downloads/")
 
 
 
-class Retrowave_Configs():
+class VHS_Configs():
+
+    SIZE = (705, 405)
 
     PATHS = {
         "images": {
-            ".": Path("./filterfy/filters/retrowave/images"),
-            "noise_lines": Path("./filterfy/filters/retrowave/images/noise_lines")
+            ".": Path("./filterfy/filters/vhs/images"),
+            "noise_lines": Path("./filterfy/filters/vhs/images/noise_lines")
         }
     }
 
