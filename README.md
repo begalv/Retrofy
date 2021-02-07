@@ -37,4 +37,4 @@ retrofier.save(path="YOUR_SAVE_PATH") #saves the modified image on the selected 
 **After:**
 ![Alt](https://github.com/begalv/Retrofy/blob/main/docs/images/after.png)
 
-Note that all effects used on this example used default values as arguments. <br /><br /> If you want to adjust the arguments values, you can call the effects methods separately. <br /><br />
+Note that all effects used on this example used default values as arguments. <br /><br /> If you want to adjust the arguments values, you can call the effects methods separately. <br /><br /> For more information, look at the examples folder.
