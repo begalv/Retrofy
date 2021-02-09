@@ -1,1 +1,2 @@
 include retrofy/filters/vhs/images/noise_lines/*.png
+include retrofy/filters/vhs/fonts/*.ttf
