@@ -20,13 +20,15 @@ class Filter():
 
         self.__img_src = img_src
         self.__last_modifications = [] #list for all modifications that wasnt undoed
+        self.__last_undos = []
         self.__load_image(is_image)
+
+
 
 
     @property
     def modified_img(self):
         return self.__modified_img
-
 
     @modified_img.setter
     def modified_img(self, img):
@@ -35,7 +37,6 @@ class Filter():
         self.__modified_img = img
         self.__last_modifications.append(self.__modified_img)
 
-
     @property
     def original_img(self):
         return self.__original_img
@@ -43,6 +44,7 @@ class Filter():
     @property
     def last_modifications(self):
         return self.__last_modifications
+
 
 
     def __load_image(self, is_image=False):
@@ -65,6 +67,7 @@ class Filter():
                     raise ValueError("Could not access image on file '{}'.".format(self.__img_src))
 
 
+
     def undo(self, times=1):
         if isinstance(times, int) == False:
             raise TypeError("Parameter 'times' must be an integer.")
@@ -72,6 +75,7 @@ class Filter():
         if len(self.__last_modifications) > 0:
             for i in range(times):
                 if len(self.__last_modifications) > 0:
+                    self.__last_undos.append(self.__last_modifications[-1])
                     self.__last_modifications.pop(-1)
             if len(self.__last_modifications) == 0:
                 self.reset()
@@ -79,8 +83,22 @@ class Filter():
                 self.__modified_img = self.__last_modifications[-1]
 
 
+
+    def redo(self, times=1):
+        if isinstance(times, int) == False:
+            raise TypeError("Parameter 'times' must be an integer.")
+
+        if len(self.__last_undos) > 0:
+            for i in range(times):
+                if len(self.__last_undos) > 0:
+                    self.modified_img = self.__last_undos[-1]
+                    self.__last_undos.pop(-1)
+
+
+
     def reset(self):
         self.__modified_img = self.__original_img
+
 
 
     def show(self, original=False):
@@ -91,6 +109,7 @@ class Filter():
             self.__modified_img.show()
         else:
             self.__original_img.show()
+
 
 
     def save(self, path, original=False):
