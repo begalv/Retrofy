@@ -26,8 +26,11 @@ from retrofy import VHS
 retrofier = VHS("YOUR_PHOTO_PATH") #you can use URLs for photos on the web or Pillow Image Objects as well
 retrofier.apply_all_effects() #applies all effects that forms the VHS filter
 
-#or you can do it with inplace = False
+#OR you can do it with inplace = False
 resulted_img = retrofier.apply_all_effects(inplace=False)
+
+#OR with some extra effects:
+retrofier.apply_all_effects(play_text=True, wave_warp=True) #to apply the VHS "play" text on the image and the wave warp effect on a random row on the image
 
 retrofier.show() #shows the modiefied image so far
 retrofier.save(path="YOUR_SAVE_PATH") #saves the modified image on the selected path

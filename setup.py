@@ -8,5 +8,5 @@ setup(
     version = "0.1.0",
     packages=find_packages(),
     include_package_data=True,
-    install_requires=["numpy", "requests", "Pillow", "blend_modes"]
+    install_requires=["numpy==1.15.4", "requests", "Pillow", "blend_modes"]
 )

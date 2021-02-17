@@ -1,5 +1,8 @@
 import re
 import os
+from datetime import datetime
+import datetime as dt
+import random
 from pathlib import Path
 from collections.abc import Iterable
 
@@ -98,3 +101,23 @@ def translate_ranges(value, from_min, from_max, to_min, to_max):
 
     # Convert the 0-1 range into a value in the to range.
     return to_min + (value_scaled * to_range)
+
+
+def get_random_datetime(start_year, end_year, hour=None):
+    start_date = dt.date(int(start_year), 1, 1)
+    end_date = dt.date(int(end_year), 12, 31)
+
+    time_between_dates = end_date - start_date
+    days_between_dates = time_between_dates.days
+    random_number_of_days = random.randrange(days_between_dates)
+
+    random_date = start_date + dt.timedelta(days=random_number_of_days)
+
+    if hour == None:
+        time = datetime.now().time()
+    else:
+        time = dt.time(hour, random.randint(0, 59))
+
+    random_datetime = datetime.combine(random_date, time)
+
+    return random_datetime
