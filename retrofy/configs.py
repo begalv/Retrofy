@@ -3,7 +3,11 @@ import os
 
 DOWNLOADS_FOLDER = Path(os.path.expanduser("~")) / Path("Downloads/")
 
+class Filter_Configs():
 
+    MAXS = {
+        "size": (1920, 1080)
+    }
 
 class VHS_Configs():
 

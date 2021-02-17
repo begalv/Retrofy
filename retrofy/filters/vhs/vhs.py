@@ -18,7 +18,6 @@ class VHS(Filter):
 
 
 
-
     @staticmethod
     def get_noise_lines_by_id(id):
         if isinstance(id, int) == False:

@@ -1,28 +1,25 @@
 import numpy as np
 import requests
 import os
-from PIL import Image
+from PIL import Image, ImageOps
 from pathlib import Path
+from retrofy.configs import Filter_Configs
 import retrofy.utils as utils
 
+CONFIGS = Filter_Configs()
 
 class Filter():
+
+    MAX_SIZE = CONFIGS.MAXS["size"]
 
     def __init__(self, img_src):
         if isinstance(img_src, (str, Image.Image)) == False:
             raise TypeError("Parameter 'img_src' must be a string or a Pillow Image object.")
 
-        # if img_src alredy is a PIL Image object
-        if isinstance(img_src, Image.Image) == True:
-            is_image = True
-        else:
-            is_image = False
-
         self.__img_src = img_src
         self.__last_modifications = [] #list for all modifications that wasnt undoed
         self.__last_undos = []
-        self.__load_image(is_image)
-
+        self.__load_image()
 
 
 
@@ -47,24 +44,25 @@ class Filter():
 
 
 
-    def __load_image(self, is_image=False):
-        if is_image == True:
+    def __load_image(self):
+        # if img_src alredy is a PIL Image object
+        if isinstance(self.__img_src, Image.Image) == True:
             self.__original_img = self.__img_src
-            self.__modified_img = self.__original_img
         else:
             if utils.is_url(self.__img_src) == True:
                 try:
                     self.__img_src = requests.get(self.__img_src, stream=True).raw
                     self.__original_img = Image.open(self.__img_src).convert("RGB")
-                    self.__modified_img = self.__original_img
                 except:
                     raise ValueError("Could not download image from URL '{}'.".format(self.__img_src))
             else:
                 try:
                     self.__original_img = Image.open(self.__img_src).convert("RGB")
-                    self.__modified_img = self.__original_img
                 except:
                     raise ValueError("Could not access image on file '{}'.".format(self.__img_src))
+        #resize large images (with same aspect ratio)
+        self.__original_img.thumbnail(self.MAX_SIZE)
+        self.__modified_img = self.__original_img
 
 
 
